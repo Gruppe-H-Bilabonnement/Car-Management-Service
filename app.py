@@ -1,7 +1,8 @@
 from flask import Flask, jsonify, request
+import os
+from database.initialize import init_db
 
-
-
+app = Flask(__name__)
 
 
 
