@@ -6,15 +6,18 @@ from database.connection import create_connection
 
 # Initialize database
 def init_db():
+    # Create tables if they do not exist
     _create_fuel_types_table()
+    _create_car_make_table()
+    _create_pickup_location_table()
     _create_car_management_table()
-
-    # Check if the car_management table has data
+    
     if not _check_table_data_exists():
         _load_car_data()
         print("Car data loaded successfully")
     else:
         print("Car data already loaded")
+
 
 
 # Create car_management table
@@ -23,34 +26,71 @@ def _create_car_management_table():
         connection = create_connection()
         cursor = connection.cursor()
 
-        # Define the table schema
+        # Define the car_management table schema
         cursor.execute(
             """
             CREATE TABLE IF NOT EXISTS car_management (
                 id INTEGER PRIMARY KEY,
                 purchase_date DATE NOT NULL,
                 purchase_price FLOAT NOT NULL,
-                car_make TEXT NOT NULL,
+                car_make_id INTEGER NOT NULL,
                 fuel_type_id INTEGER NOT NULL,
-                pickup_location TEXT NOT NULL,
-                FOREIGN KEY (fuel_type_id) REFERENCES fuel_types(fuel_type_id)
+                pickup_location_id INTEGER NOT NULL,
+                FOREIGN KEY (car_make_id) REFERENCES car_make(car_make_id),
+                FOREIGN KEY (fuel_type_id) REFERENCES fuel_types(fuel_type_id),
+                FOREIGN KEY (pickup_location_id) REFERENCES pickup_location(pickup_location_id)
             )
             """
         )
-
-        # Index for faster querying
-        cursor.execute(
-            """
-            CREATE INDEX IF NOT EXISTS idx_car_make ON car_management (car_make)
-            """
-        )
-
     except sqlite3.Error as error:
         print(f"Error creating car_management table: {error}")
-
     finally:
         connection.commit()
         connection.close()
+
+
+# Create car_make table
+def _create_car_make_table():
+    try:
+        connection = create_connection()
+        cursor = connection.cursor()
+
+        # Define the car_make table schema
+        cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS car_make (
+                car_make_id INTEGER PRIMARY KEY,
+                car_make_name TEXT NOT NULL UNIQUE
+            )
+            """
+        )
+    except sqlite3.Error as error:
+        print(f"Error creating car_make table: {error}")
+    finally:
+        connection.commit()
+        connection.close()
+
+# Create pickup_location table
+def _create_pickup_location_table():
+    try:
+        connection = create_connection()
+        cursor = connection.cursor()
+
+        # Define the pickup_location table schema
+        cursor.execute(
+            """
+            CREATE TABLE IF NOT EXISTS pickup_location (
+                pickup_location_id INTEGER PRIMARY KEY,
+                pickup_location_name TEXT NOT NULL UNIQUE
+            )
+            """
+        )
+    except sqlite3.Error as error:
+        print(f"Error creating pickup_location table: {error}")
+    finally:
+        connection.commit()
+        connection.close()
+
 
 
 # Create fuel_types table
@@ -123,50 +163,57 @@ def _load_car_data():
         relevant_columns = {
             "Dato Indkoeb": "purchase_date",
             "Indkoebspris": "purchase_price",
-            "Bilmaerke": "car_make",
+            "Bilmaerke": "car_make_name",
             "Braendstof": "fuel_type_name",
-            "Udleveringssted": "pickup_location",
+            "Udleveringssted": "pickup_location_name",
         }
         data = pd.read_excel(car_data_path, usecols=relevant_columns.keys()).rename(columns=relevant_columns)
 
         # Convert purchase_date to string in YYYY-MM-DD format
         data["purchase_date"] = data["purchase_date"].dt.strftime("%Y-%m-%d")
 
-        # Normalize fuel_type_name to match database entries
+        # Normalize strings
         data["fuel_type_name"] = data["fuel_type_name"].str.strip().str.capitalize()
+        data["car_make_name"] = data["car_make_name"].str.strip().str.capitalize()
+        data["pickup_location_name"] = data["pickup_location_name"].str.strip().str.capitalize()
 
         # Establish database connection
         connection = create_connection()
         cursor = connection.cursor()
 
+        # Insert unique car makes into car_make table and create a mapping
+        car_make_mapping = _populate_mapping_table(cursor, "car_make", "car_make_id", "car_make_name", data["car_make_name"])
+
+        # Insert unique pickup locations into pickup_location table and create a mapping
+        pickup_location_mapping = _populate_mapping_table(cursor, "pickup_location", "pickup_location_id", "pickup_location_name", data["pickup_location_name"])
+
         # Fetch all fuel types into a mapping dictionary
         cursor.execute("SELECT fuel_type_name, fuel_type_id FROM fuel_types")
         fuel_type_mapping = {row[0]: row[1] for row in cursor.fetchall()}
 
-        # Map fuel_type_name to fuel_type_id
+        # Map names to IDs
+        data["car_make_id"] = data["car_make_name"].map(car_make_mapping)
+        data["pickup_location_id"] = data["pickup_location_name"].map(pickup_location_mapping)
         data["fuel_type_id"] = data["fuel_type_name"].map(fuel_type_mapping)
 
-        # Check for unmapped fuel types
-        if data["fuel_type_id"].isnull().any():
-            unmapped = data[data["fuel_type_id"].isnull()]["fuel_type_name"].unique()
-            print(f"Error: Unmapped fuel types found: {unmapped}")
-            return
-
-        # Debug: Print a sample of the processed data
-        print(data.head())
-        #TODO remove this line maybe?
+        # Check for unmapped data
+        for column in ["car_make_id", "pickup_location_id", "fuel_type_id"]:
+            if data[column].isnull().any():
+                unmapped = data[data[column].isnull()]
+                print(f"Error: Unmapped values found in {column}: {unmapped}")
+                return
 
         # Prepare data for insertion
-        car_data = data[["purchase_date", "purchase_price", "car_make", "fuel_type_id", "pickup_location"]].values.tolist()
+        car_data = data[["purchase_date", "purchase_price", "car_make_id", "fuel_type_id", "pickup_location_id"]].values.tolist()
 
         # Debug: Print number of rows to be inserted
         print(f"Inserting {len(car_data)} rows into car_management...")
-        #TODO remove this line maybe?
+        #TODO: Remove debug print
 
         # Insert data into car_management
         cursor.executemany(
             """
-            INSERT INTO car_management (purchase_date, purchase_price, car_make, fuel_type_id, pickup_location)
+            INSERT INTO car_management (purchase_date, purchase_price, car_make_id, fuel_type_id, pickup_location_id)
             VALUES (?, ?, ?, ?, ?)
             """,
             car_data
@@ -179,4 +226,18 @@ def _load_car_data():
     finally:
         connection.commit()
         connection.close()
+
+# 
+def _populate_mapping_table(cursor, table_name, id_column, name_column, values):
+    """
+    Populates a mapping table with unique values and returns a dictionary of name-to-id mappings.
+    """
+    cursor.executemany(
+        f"INSERT OR IGNORE INTO {table_name} ({name_column}) VALUES (?)",
+        [(value,) for value in values.unique()]
+    )
+
+    # Fetch the mappings
+    cursor.execute(f"SELECT {name_column}, {id_column} FROM {table_name}")
+    return {row[0]: row[1] for row in cursor.fetchall()}
 
