@@ -2,13 +2,16 @@ from flask import Flask, jsonify, request
 import os
 from database.initialize import init_db
 from api.routes import car_management_routes
+from swagger.config import init_swagger
 app = Flask(__name__)
+
 
 
 
 # Register the car_management_routes 
 app.register_blueprint(car_management_routes, url_prefix='/api/v1/car-management')
 
+swagger = init_swagger(app)
 
 
 # Error handler for 404 not found
