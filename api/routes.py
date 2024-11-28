@@ -27,6 +27,7 @@ def get_all_cars():
 
 # Retrieve a car by ID
 @car_management_routes.route('/car/<int:id>', methods=['GET'])
+@swag_from('../swagger/docs/get_car_by_id.yml')
 def get_car_by_id(id):
     try:
         car = db_retrieve_car_by_id(id)
@@ -39,6 +40,7 @@ def get_car_by_id(id):
 
 # Retrieve cars by make
 @car_management_routes.route('/car/make/<int:car_make_id>', methods=['GET'])
+@swag_from('../swagger/docs/get_cars_by_make_id.yml')
 def get_cars_by_make(car_make_id):
     try:
         cars = db_retrieve_car_by_make(car_make_id)
@@ -51,6 +53,7 @@ def get_cars_by_make(car_make_id):
 
 # Retrieve cars by fuel type
 @car_management_routes.route('/car/fuel/<int:fuel_type_id>', methods=['GET'])
+@swag_from('../swagger/docs/get_cars_by_fuel_type.yml')
 def get_cars_by_fuel_type(fuel_type_id):
     try:
         cars = db_retrieve_car_by_fuel_type(fuel_type_id)
@@ -63,6 +66,7 @@ def get_cars_by_fuel_type(fuel_type_id):
 
 # Retrieve cars by pickup location
 @car_management_routes.route('/car/location/<int:pickup_location_id>', methods=['GET'])
+@swag_from('../swagger/docs/get_cars_by_pickup_location_id.yml')
 def get_cars_by_pickup_location(pickup_location_id):
     try:
         cars = db_retrieve_car_by_pickup_location(pickup_location_id)
@@ -75,6 +79,7 @@ def get_cars_by_pickup_location(pickup_location_id):
 
 # Add a new car
 @car_management_routes.route('/car', methods=['POST'])
+@swag_from('../swagger/docs/add_new_car.yml')
 def add_car():
     try:
         data = request.get_json()
@@ -85,6 +90,7 @@ def add_car():
     
 # Remove a car by id
 @car_management_routes.route('/car/<int:id>', methods=['DELETE'])
+@swag_from('../swagger/docs/delete_car_by_id.yml')
 def delete_car(id):
     try:
         message = db_remove_car_by_id(id)
@@ -94,6 +100,7 @@ def delete_car(id):
 
 # Update pickup location of a car
 @car_management_routes.route('/car/<int:id>', methods=['PATCH'])
+@swag_from('../swagger/docs/update_car_location.yml')
 def update_car_location(id):
     try:
         data = request.get_json()

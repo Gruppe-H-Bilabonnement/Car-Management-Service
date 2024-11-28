@@ -1,0 +1,38 @@
+summary: "Add a new car"
+description: "Adds a new car to the database"
+requestBody:
+  description: "Car details"
+  required: true
+  content:
+    application/json:
+      schema:
+        type: "object"
+        properties:
+          purchase_date:
+            type: "date"
+            example: "2021-01-01"
+          purchase_price:
+            type: "number"
+            example: 10000.00
+          car_make_id:
+            type: "integer"
+            example: 1
+          fuel_type_id:
+            type: "integer"
+            example: 1
+          pickup_location_id:
+            type: "integer"
+            example: 1
+responses:
+  201:
+    description: "Car added successfully"
+    content:
+      application/json:
+        schema:
+          type: "object"
+          properties:
+            message:
+              type: "string"
+              example: "Car added successfully"
+  500:
+    description: "Internal server error"
