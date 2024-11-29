@@ -23,14 +23,14 @@ jobs:
       uses: docker/login-action@v2
       with:
         registry: https://index.docker.io/v1/
-        username: ${{ secrets.AzureAppService_ContainerUsername_c5898b69030e4546ba5e4148ea4bbfd1 }}
-        password: ${{ secrets.AzureAppService_ContainerPassword_4ca578ff238a40229e56487e36434f92 }}
+        username: ${{ secrets.AzureAppService_ContainerUsername_75b8fa4cbaf9451ba7ebf123da690493 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_626b91cbb83e4766a8eb60fb12b4563d }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_c5898b69030e4546ba5e4148ea4bbfd1 }}/carmanagementservice:${{ github.sha }}
+        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_75b8fa4cbaf9451ba7ebf123da690493 }}/carmanagementservice:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -47,5 +47,5 @@ jobs:
       with:
         app-name: 'group-h-car-management-service'
         slot-name: 'production'
-        publish-profile: ${{ secrets.AzureAppService_PublishProfile_08dcf40153f04b2f83c9a2f45ad0723a }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_c5898b69030e4546ba5e4148ea4bbfd1 }}/carmanagementservice:${{ github.sha }}'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_2c15a66d91c9429dbcd4638ef0643855 }}
+        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_75b8fa4cbaf9451ba7ebf123da690493 }}/carmanagementservice:${{ github.sha }}'
