@@ -149,9 +149,8 @@ def _check_table_data_exists():
 # Load car data from Excel
 def _load_car_data():
     # Define the Excel file path
-    car_data_path = os.path.abspath(
-        os.path.join(os.path.dirname(__file__), '../xlxs/Bilabonnement_2024_Clean.xlsx')
-    )
+    #car_data_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../xlxs/Bilabonnement_2024_Clean.xlsx'))
+    car_data_path = os.path.join(os.path.dirname(__file__), '../xlxs/Bilabonnement_2024_Clean.xlsx')
 
     try:
         # Check if the file exists
@@ -168,7 +167,7 @@ def _load_car_data():
             "Udleveringssted": "pickup_location_name",
         }
         data = pd.read_excel(car_data_path, usecols=relevant_columns.keys()).rename(columns=relevant_columns)
-
+        
         # Convert purchase_date to string in YYYY-MM-DD format
         data["purchase_date"] = data["purchase_date"].dt.strftime("%Y-%m-%d")
 
