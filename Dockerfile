@@ -10,8 +10,8 @@ WORKDIR /app
 # Install all dependencies listed in the requirements.txt file
 RUN pip install -r requirements.txt
 
-# Make port 5001 available for connections from outside the container
-EXPOSE 5001
+# Make port 80 available for connections from outside the container
+EXPOSE 80
 
 # Run this command when the container starts
-CMD ["python", "app.py"]
+CMD ["gunicorn", "--bind", "0.0.0.0:80", "app:app"]
