@@ -7,4 +7,4 @@ pip install -r requirements
 
 docker build -t car_management_service .
 
-docker run -d -p 5001:5001 --name car_management_app_container car_management_service
+docker run -d -p 80:80 --name car_management_app_container car_management_service
