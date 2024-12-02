@@ -16,7 +16,6 @@ app.register_blueprint(car_management_routes, url_prefix='/api/v1/car-management
 
 # Home route with API documentation for Car Management
 @app.route('/api/v1/', methods=['GET'])
-@swag_from('../swagger/docs/home.yml')
 def home():
     return jsonify({
         "message": "Welcome to Car Management API",
