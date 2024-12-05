@@ -4,7 +4,10 @@ from dotenv import load_dotenv
 
 load_dotenv(override=True)
 
-SQLITE_DB_PATH = os.getenv('SQLITE_DB_PATH', os.path.join(os.environ['HOME'], 'site', 'wwwroot', 'car_management.db'))
+SQLITE_DB_PATH = os.getenv('SQLITE_DB_PATH', os.path.join(os.environ['HOME'], 'data', 'car_management.db'))
+
+if not os.path.exists(SQLITE_DB_PATH):
+    raise FileNotFoundError(f"Database not found at {SQLITE_DB_PATH}")
 
 # Create or connect to SQLite database
 def create_connection():
