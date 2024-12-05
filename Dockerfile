@@ -7,9 +7,6 @@ COPY . /app
 # Change the working directory to /app (similar to the 'cd' command in a terminal)
 WORKDIR /app
 
-# Copy the SQLite database to a persistent directory in the container
-COPY car_management.db /home/data/car_management.db
-
 # Install all dependencies listed in the requirements.txt file
 RUN pip install -r requirements.txt
 

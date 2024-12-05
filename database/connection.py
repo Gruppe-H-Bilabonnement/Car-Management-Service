@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 
 load_dotenv(override=True)
 
-SQLITE_DB_PATH = os.getenv('SQLITE_DB_PATH', os.path.join(os.environ['HOME'], 'data', 'car_management.db'))
+SQLITE_DB_PATH = os.getenv('SQLITE_DB_PATH', os.path.join(os.environ['HOME'], 'car_management.db'))
 
 # Create or connect to SQLite database
 def create_connection():
