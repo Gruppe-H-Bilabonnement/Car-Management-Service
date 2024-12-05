@@ -19,7 +19,6 @@ def init_db():
         print("Car data already loaded")
 
 
-
 # Create car_management table
 def _create_car_management_table():
     try:
@@ -70,6 +69,7 @@ def _create_car_make_table():
         connection.commit()
         connection.close()
 
+
 # Create pickup_location table
 def _create_pickup_location_table():
     try:
@@ -90,7 +90,6 @@ def _create_pickup_location_table():
     finally:
         connection.commit()
         connection.close()
-
 
 
 # Create fuel_types table
@@ -146,11 +145,10 @@ def _check_table_data_exists():
         return result
 
 
-# Load car data from Excel
+# Load car data from CSV
 def _load_car_data():
-    # Define the Excel file path
-    #car_data_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../xlxs/Bilabonnement_2024_Clean.xlsx'))
-    car_data_path = os.path.join(os.path.dirname(__file__), '../xlxs/Bilabonnement_2024_Clean.xlsx')
+    # Define the CSV file path
+    car_data_path = os.path.join(os.path.dirname(__file__), '../csv/Bilabonnement_2024_Clean.csv')
 
     try:
         # Check if the file exists
@@ -158,7 +156,7 @@ def _load_car_data():
             print(f"File not found: {car_data_path}")
             return
 
-        # Read relevant columns from Excel
+        # Read relevant columns from CSV
         relevant_columns = {
             "Dato Indkoeb": "purchase_date",
             "Indkoebspris": "purchase_price",
@@ -166,10 +164,10 @@ def _load_car_data():
             "Braendstof": "fuel_type_name",
             "Udleveringssted": "pickup_location_name",
         }
-        data = pd.read_excel(car_data_path, usecols=relevant_columns.keys()).rename(columns=relevant_columns)
+        data = pd.read_csv(car_data_path, usecols=relevant_columns.keys()).rename(columns=relevant_columns)
         
         # Convert purchase_date to string in YYYY-MM-DD format
-        data["purchase_date"] = data["purchase_date"].dt.strftime("%Y-%m-%d")
+        data["purchase_date"] = pd.to_datetime(data["purchase_date"]).dt.strftime("%Y-%m-%d")
 
         # Normalize strings
         data["fuel_type_name"] = data["fuel_type_name"].str.strip().str.capitalize()
@@ -207,7 +205,6 @@ def _load_car_data():
 
         # Debug: Print number of rows to be inserted
         print(f"Inserting {len(car_data)} rows into car_management...")
-        #TODO: Remove debug print
 
         # Insert data into car_management
         cursor.executemany(
@@ -226,7 +223,7 @@ def _load_car_data():
         connection.commit()
         connection.close()
 
-# 
+
 def _populate_mapping_table(cursor, table_name, id_column, name_column, values):
     """
     Populates a mapping table with unique values and returns a dictionary of name-to-id mappings.
@@ -239,4 +236,3 @@ def _populate_mapping_table(cursor, table_name, id_column, name_column, values):
     # Fetch the mappings
     cursor.execute(f"SELECT {name_column}, {id_column} FROM {table_name}")
     return {row[0]: row[1] for row in cursor.fetchall()}
-
