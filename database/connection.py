@@ -8,6 +8,6 @@ SQLITE_DB_PATH = os.getenv('SQLITE_DB_PATH', os.path.join(os.environ['HOME'], 's
 
 # Create or connect to SQLite database
 def create_connection():
-    connection = sqlite3.connect('car_management.db')
+    connection = sqlite3.connect(SQLITE_DB_PATH)
     connection.row_factory = sqlite3.Row  # Rows as dictionaries
     return connection
