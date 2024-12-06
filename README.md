@@ -62,7 +62,6 @@ car-management-service/
 │
 ├── app.py                   # Main application entry point
 ├── database/
-│   ├── connection.py        # Database connection management
 │   └── initialization.py    # Database setup and data loading
 │
 ├── api/
