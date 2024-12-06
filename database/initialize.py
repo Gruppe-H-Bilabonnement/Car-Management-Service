@@ -1,6 +1,12 @@
 import os
 import sqlite3
 import pandas as pd
+from dotenv import load_dotenv
+
+# Load envoirnment variables
+load_dotenv()
+
+SQLITE_DB_PATH = os.getenv('SQLITE_DB_PATH', '/home/car_management.db')
 
 # Initialize database
 def init_db():
@@ -20,7 +26,7 @@ def init_db():
 # Create car_management table
 def _create_car_management_table():
     try:
-        connection = sqlite3.connect('car_management.db')
+        connection = sqlite3.connect(SQLITE_DB_PATH)
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
@@ -50,7 +56,7 @@ def _create_car_management_table():
 # Create car_make table
 def _create_car_make_table():
     try:
-        connection = sqlite3.connect('car_management.db')
+        connection = sqlite3.connect(SQLITE_DB_PATH)
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
@@ -73,7 +79,7 @@ def _create_car_make_table():
 # Create pickup_location table
 def _create_pickup_location_table():
     try:
-        connection = sqlite3.connect('car_management.db')
+        connection = sqlite3.connect(SQLITE_DB_PATH)
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
@@ -96,7 +102,7 @@ def _create_pickup_location_table():
 # Create fuel_types table
 def _create_fuel_types_table():
     try:
-        connection = sqlite3.connect('car_management.db')
+        connection = sqlite3.connect(SQLITE_DB_PATH)
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
@@ -134,7 +140,7 @@ def _create_fuel_types_table():
 # Check if car_management has data
 def _check_table_data_exists():
     try:
-        connection = sqlite3.connect('car_management.db')
+        connection = sqlite3.connect(SQLITE_DB_PATH)
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
@@ -178,7 +184,7 @@ def _load_car_data():
         data["pickup_location_name"] = data["pickup_location_name"].str.strip().str.capitalize()
 
         # Establish database connection
-        connection = sqlite3.connect('car_management.db')
+        connection = sqlite3.connect(SQLITE_DB_PATH)
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 

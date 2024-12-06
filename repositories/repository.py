@@ -1,9 +1,16 @@
 import sqlite3
+import os
+from dotenv import load_dotenv
+
+# Load envoirnment variables
+load_dotenv()
+
+SQLITE_DB_PATH = os.getenv('SQLITE_DB_PATH', '/home/car_management.db')
 
 # Retrieve all cars
 def db_retrieve_all_cars():
     try:
-        connection = sqlite3.connect('car_management.db')
+        connection = sqlite3.connect(SQLITE_DB_PATH)
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
@@ -24,7 +31,7 @@ def db_retrieve_all_cars():
 # Retrieve a car by id
 def db_retrieve_car_by_id(id):
     try:
-        connection = sqlite3.connect('car_management.db')
+        connection = sqlite3.connect(SQLITE_DB_PATH)
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
@@ -43,7 +50,7 @@ def db_retrieve_car_by_id(id):
 # Retrieve car by make
 def db_retrieve_car_by_make(car_make_id):
     try:
-        connection = sqlite3.connect('car_management.db')
+        connection = sqlite3.connect(SQLITE_DB_PATH)
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
@@ -62,7 +69,7 @@ def db_retrieve_car_by_make(car_make_id):
 # Retrieve car by fuel type
 def db_retrieve_car_by_fuel_type(fuel_type_id):
     try:
-        connection = sqlite3.connect('car_management.db')
+        connection = sqlite3.connect(SQLITE_DB_PATH)
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
@@ -81,7 +88,7 @@ def db_retrieve_car_by_fuel_type(fuel_type_id):
 # Retrieve car by pickup location
 def db_retrieve_car_by_pickup_location(pickup_location_id):
     try:
-        connection = sqlite3.connect('car_management.db')
+        connection = sqlite3.connect(SQLITE_DB_PATH)
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
@@ -100,7 +107,7 @@ def db_retrieve_car_by_pickup_location(pickup_location_id):
 # Add a new car
 def db_add_new_car(data):
     try:
-        connection = sqlite3.connect('car_management.db')
+        connection = sqlite3.connect(SQLITE_DB_PATH)
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
@@ -126,7 +133,7 @@ def db_add_new_car(data):
 # Remove a car
 def db_remove_car_by_id(id):
     try:
-        connection = sqlite3.connect('car_management.db')
+        connection = sqlite3.connect(SQLITE_DB_PATH)
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
@@ -145,7 +152,7 @@ def db_remove_car_by_id(id):
 # Update pickup location id using JSON body and id
 def db_update_pickup_location(id, data):
     try:
-        connection = sqlite3.connect('car_management.db')
+        connection = sqlite3.connect(SQLITE_DB_PATH)
         connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
