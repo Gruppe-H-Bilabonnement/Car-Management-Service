@@ -82,5 +82,5 @@ def internal_error(error):
 
 # Init database and run the app
 if __name__ == '__main__':
-    #init_db()
+    init_db()
     app.run(host='0.0.0.0', port=80)
