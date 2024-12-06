@@ -1,8 +1,6 @@
 import os
 import sqlite3
 import pandas as pd
-from database.connection import create_connection
-
 
 # Initialize database
 def init_db():
@@ -22,7 +20,8 @@ def init_db():
 # Create car_management table
 def _create_car_management_table():
     try:
-        connection = create_connection()
+        connection = sqlite3.connect('car_management.db')
+        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
         # Define the car_management table schema
@@ -51,7 +50,8 @@ def _create_car_management_table():
 # Create car_make table
 def _create_car_make_table():
     try:
-        connection = create_connection()
+        connection = sqlite3.connect('car_management.db')
+        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
         # Define the car_make table schema
@@ -73,7 +73,8 @@ def _create_car_make_table():
 # Create pickup_location table
 def _create_pickup_location_table():
     try:
-        connection = create_connection()
+        connection = sqlite3.connect('car_management.db')
+        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
         # Define the pickup_location table schema
@@ -95,7 +96,8 @@ def _create_pickup_location_table():
 # Create fuel_types table
 def _create_fuel_types_table():
     try:
-        connection = create_connection()
+        connection = sqlite3.connect('car_management.db')
+        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
         # Define the fuel_types table schema
@@ -132,7 +134,8 @@ def _create_fuel_types_table():
 # Check if car_management has data
 def _check_table_data_exists():
     try:
-        connection = create_connection()
+        connection = sqlite3.connect('car_management.db')
+        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
         cursor.execute("SELECT COUNT(*) AS count FROM car_management")
@@ -175,7 +178,8 @@ def _load_car_data():
         data["pickup_location_name"] = data["pickup_location_name"].str.strip().str.capitalize()
 
         # Establish database connection
-        connection = create_connection()
+        connection = sqlite3.connect('car_management.db')
+        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
         # Insert unique car makes into car_make table and create a mapping

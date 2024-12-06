@@ -1,11 +1,10 @@
 import sqlite3
-from database.connection import create_connection
-
 
 # Retrieve all cars
 def db_retrieve_all_cars():
     try:
-        connection = create_connection()
+        connection = sqlite3.connect('car_management.db')
+        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
         # Retrieve all cars
@@ -25,7 +24,8 @@ def db_retrieve_all_cars():
 # Retrieve a car by id
 def db_retrieve_car_by_id(id):
     try:
-        connection = create_connection()
+        connection = sqlite3.connect('car_management.db')
+        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
         cursor.execute(
@@ -43,7 +43,8 @@ def db_retrieve_car_by_id(id):
 # Retrieve car by make
 def db_retrieve_car_by_make(car_make_id):
     try:
-        connection = create_connection()
+        connection = sqlite3.connect('car_management.db')
+        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
         cursor.execute(
@@ -61,7 +62,8 @@ def db_retrieve_car_by_make(car_make_id):
 # Retrieve car by fuel type
 def db_retrieve_car_by_fuel_type(fuel_type_id):
     try:
-        connection = create_connection()
+        connection = sqlite3.connect('car_management.db')
+        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
         cursor.execute(
@@ -79,7 +81,8 @@ def db_retrieve_car_by_fuel_type(fuel_type_id):
 # Retrieve car by pickup location
 def db_retrieve_car_by_pickup_location(pickup_location_id):
     try:
-        connection = create_connection()
+        connection = sqlite3.connect('car_management.db')
+        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
         cursor.execute(
@@ -97,7 +100,8 @@ def db_retrieve_car_by_pickup_location(pickup_location_id):
 # Add a new car
 def db_add_new_car(data):
     try:
-        connection = create_connection()
+        connection = sqlite3.connect('car_management.db')
+        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
         cursor.execute(
@@ -122,7 +126,8 @@ def db_add_new_car(data):
 # Remove a car
 def db_remove_car_by_id(id):
     try:
-        connection = create_connection()
+        connection = sqlite3.connect('car_management.db')
+        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
         cursor.execute(
@@ -140,7 +145,8 @@ def db_remove_car_by_id(id):
 # Update pickup location id using JSON body and id
 def db_update_pickup_location(id, data):
     try:
-        connection = create_connection()
+        connection = sqlite3.connect('car_management.db')
+        connection.row_factory = sqlite3.Row
         cursor = connection.cursor()
 
         cursor.execute(
