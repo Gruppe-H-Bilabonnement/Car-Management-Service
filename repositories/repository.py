@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 # Load envoirnment variables
 load_dotenv()
 
-SQLITE_DB_PATH = os.getenv('SQLITE_DB_PATH', '/home/car_management.db')
+SQLITE_DB_PATH = os.getenv('SQLITE_DB_PATH', 'car_management.db')
 
 # Retrieve all cars
 def db_retrieve_all_cars():
