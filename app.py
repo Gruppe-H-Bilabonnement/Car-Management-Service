@@ -8,6 +8,9 @@ from flasgger import swag_from
 # Initialize Flask app
 app = Flask(__name__)
 
+# Initialize database
+init_db()
+
 # Initialize Swagger
 swagger = init_swagger(app)
 
@@ -82,5 +85,4 @@ def internal_error(error):
 
 # Init database and run the app
 if __name__ == '__main__':
-    init_db()
     app.run(host='0.0.0.0', port=80)

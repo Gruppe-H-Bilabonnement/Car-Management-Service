@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 # Load envoirnment variables
 load_dotenv()
 
-SQLITE_DB_PATH = os.getenv('SQLITE_DB_PATH', 'car_management.db')
+SQLITE_DB_PATH = os.getenv('SQLITE_DB_PATH', '/home/car_management.db')
 
 # Initialize database
 def init_db():
