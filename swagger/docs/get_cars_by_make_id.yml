@@ -1,3 +1,7 @@
+Get Cars by Make ID
+---
+tags:
+  - Car Management
 summary: "Retrieve cars by make"
 description: "Fetches cars from the database by car make ID"
 parameters:

@@ -1,3 +1,7 @@
+Get Car by ID
+---
+tags:
+  - Car Management
 summary: "Retrieve a car by ID"
 description: "Fetches a car from the database by its ID"
 parameters:

@@ -1,3 +1,7 @@
+Get Cars by Pickup Location ID
+---
+tags:
+  - Car Management
 summary: "Retrieve cars by pickup location"
 description: "Fetches cars from the database by pickup location ID"
 parameters:

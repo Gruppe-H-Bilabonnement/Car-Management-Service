@@ -1,3 +1,7 @@
+Get All Cars
+---
+tags:
+  - Car Management
 summary: "Retrieve all cars"
 description: "Fetches all cars from the database"
 responses:

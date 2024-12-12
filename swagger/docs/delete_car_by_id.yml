@@ -1,3 +1,7 @@
+Delete car by ID
+---
+tags:
+  - Car Management
 summary: "Remove a car by ID"
 description: "Deletes a car from the database by its ID"
 parameters:
