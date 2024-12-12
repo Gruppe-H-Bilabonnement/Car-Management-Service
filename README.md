@@ -74,8 +74,8 @@ car-management-service/
 │   ├── config.py            # Swagger configuration
 │   └── docs/                # Swagger documentation specs
 │
-└── xlsx/
-    └── Bilabonnement_2024_Clean.xlsx  # Source data spreadsheet
+└── csv/
+    └── Bilabonnement_2024_Clean.csv  # Source data spreadsheet
 ```
 
 ## API Endpoints
